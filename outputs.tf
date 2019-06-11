@@ -3,7 +3,7 @@ output "cluster_ca_certificate" {
   description = "Kubernetes cluster CA certificate"
 }
 
-output "host" {
+output "endpoint" {
   value       = "https://${google_container_cluster.k8s.endpoint}"
   description = "Kubernetes cluster API server endpoint"
 }

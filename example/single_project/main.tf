@@ -1,8 +1,9 @@
-variable project_id {}
+variable project {}
 provider "google-beta" {}
 
 locals {
   name       = "gke-private-example"
+  project    = "${var.project}"
   region     = "us-east1"
   zone1      = "us-east1-c"
   zone2      = "us-east1-b"
@@ -10,14 +11,14 @@ locals {
 
 resource "google_compute_network" "gke-private" {
   name                    = "${local.name}"
-  project                 = "${var.project_id}"
+  project                 = "${local.project}"
   auto_create_subnetworks = "false"
 }
 
 resource "google_compute_subnetwork" "gke-private1" {
   name          = "${local.name}"
   region        = "${local.region}"
-  project       = "${var.project_id}"
+  project       = "${local.project}"
   network       = "${google_compute_network.gke-private.id}"
   ip_cidr_range = "10.1.0.0/16"
 
@@ -37,7 +38,7 @@ resource "google_compute_subnetwork" "gke-private1" {
 resource "google_compute_router" "router" {
   name    = "${local.name}"
   region  = "${local.region}"
-  project = "${var.project_id}"
+  project = "${local.project}"
   network = "${google_compute_network.gke-private.id}"
 
   bgp {
@@ -47,7 +48,7 @@ resource "google_compute_router" "router" {
 
 resource "google_compute_router_nat" "nat1" {
   name                               = "${local.name}"
-  project                            = "${var.project_id}"
+  project                            = "${local.project}"
   router                             = "${google_compute_router.router.name}"
   region                             = "${local.region}"
   nat_ip_allocate_option             = "AUTO_ONLY"
@@ -59,7 +60,7 @@ module "kube_region1" {
   name           = "gke-private"
   network        = "${google_compute_network.gke-private.self_link}"
   subnetwork     = "${google_compute_subnetwork.gke-private1.self_link}"
-  project        = "${var.project_id}"
+  project        = "${local.project}"
   location       = "${local.region}"
   node_locations = ["${local.zone1}", "${local.zone2}"]
   cluster_range  = "gke-private-pods"

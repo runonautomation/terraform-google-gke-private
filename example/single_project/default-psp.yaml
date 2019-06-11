@@ -3,7 +3,9 @@ kind: PodSecurityPolicy
 metadata:
   name: default-psp
 spec:
-  privileged: false
+  privileged: true
+  allowedCapabilities:
+    - '*'
   seLinux:
     rule: RunAsAny
   supplementalGroups:

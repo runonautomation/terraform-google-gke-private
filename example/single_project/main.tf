@@ -1,9 +1,9 @@
-variable project {}
+variable networking_project {}
 provider "google-beta" {}
 
 locals {
   name       = "gke-private-example"
-  project    = "${var.project}"
+  project    = "${var.networking_project}"
   region     = "us-east1"
   zone1      = "us-east1-c"
   zone2      = "us-east1-b"

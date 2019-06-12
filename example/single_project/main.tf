@@ -69,4 +69,5 @@ module "kube_region1" {
     "World" : "0.0.0.0/0"
   }
   enable_psp     = "false"
+  disable_istio  = "true"
 }

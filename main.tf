@@ -17,7 +17,6 @@ resource "google_container_cluster" "k8s" {
   // It is reccomended to ignore node count and versions specifications in the lifecycle
   lifecycle {
     ignore_changes = [
-      "master_authorized_networks_config",
       "initial_node_count",
       "master_version",
       "min_master_version",
@@ -53,6 +52,16 @@ resource "google_container_cluster" "k8s" {
     services_secondary_range_name = "${var.services_range}"
   }
 
+  master_authorized_networks_config {
+    dynamic "cidr_blocks" {
+      for_each = var.manc
+      content {
+        cidr_block       = cidr_blocks.value
+        display_name     = cidr_blocks.key
+      }
+    }
+  }
+
   master_auth {
     client_certificate_config {
       issue_client_certificate = false
@@ -79,6 +88,13 @@ resource "google_container_cluster" "k8s" {
     network_policy_config {
       disabled = false
     }
+    istio_config {
+      disabled = var.disable_istio
+      auth = var.istio_auth
+    }
+    cloudrun_config {
+      disabled = var.disable_cloudrun
+    }
   }
 
   network_policy {
@@ -87,7 +103,7 @@ resource "google_container_cluster" "k8s" {
   }
 
   pod_security_policy_config {
-    enabled = "true"
+    enabled = "${var.enable_psp}"
   }
 
   resource_labels = "${var.labels}"

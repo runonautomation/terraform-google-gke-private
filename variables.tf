@@ -64,6 +64,33 @@ variable "labels" {
   default     = {}
 }
 
+variable "manc" {
+  type        = "map"
+  description = "Master Authorized Network Config"
+  default     = {
+    Localhost = "127.0.0.1/32"
+  }
+}
+
+variable "enable_psp" {
+  description = "Enable POD Security Policy"
+  default     = "true"
+}
+
+variable "disable_istio" {
+  description = "Disable Istio"
+  default     = true
+}
+
+variable "istio_auth" {
+  description = "Istion authentication"
+  default     = "AUTH_MUTUAL_TLS"
+}
+
+variable "disable_cloudrun" {
+  description = "Disable Cloud Run"
+  default     = true
+}
 
 ##
 # Node pool variables
@@ -128,7 +155,6 @@ variable nodepool1_service_account {
 
 variable nodepool1_oauth_scopes {
   description = "OAuth scopes for the node pool"
-
   default = [
     "https://www.googleapis.com/auth/cloud-platform",
   ]

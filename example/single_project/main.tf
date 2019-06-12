@@ -65,4 +65,8 @@ module "kube_region1" {
   node_locations = ["${local.zone1}", "${local.zone2}"]
   cluster_range  = "gke-private-pods"
   services_range = "gke-private-services"
+  manc           = {
+    "World" : "0.0.0.0/0"
+  }
+  enable_psp     = "false"
 }

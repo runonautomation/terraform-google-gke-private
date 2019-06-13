@@ -71,3 +71,15 @@ module "kube_region1" {
   enable_psp     = "false"
   disable_istio  = "true"
 }
+
+# Required for Load Balancer to communicate with the node ports
+resource "google_compute_firewall" "allow_ingress_loadbalanders" {
+  name    = "allow-ingress-loadbalancers"
+  network = "${google_compute_network.gke-private.self_link}"
+  project = "${local.project}"
+  allow {
+    protocol = "tcp"
+    ports    = ["30000-33000"]
+  }
+  source_ranges = ["130.211.0.0/22","209.85.152.0/22","209.85.204.0/22","35.191.0.0/16"]
+}

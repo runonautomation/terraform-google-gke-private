@@ -72,9 +72,9 @@ variable "manc" {
   }
 }
 
-variable "enable_psp" {
-  description = "Enable POD Security Policy"
-  default     = "true"
+variable "enable_private_endpoint" {
+  description = "Enable private endpoint for Kubernetes masters"
+  default     = "false"
 }
 
 variable "disable_istio" {

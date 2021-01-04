@@ -68,7 +68,6 @@ module "kube_region1" {
   manc           = {
     "World" : "0.0.0.0/0"
   }
-  enable_psp     = "false"
   disable_istio  = "true"
 }
 

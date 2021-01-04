@@ -45,6 +45,7 @@ resource "google_container_cluster" "k8s" {
   private_cluster_config {
     master_ipv4_cidr_block = "${var.master_ipv4_cidr_block}"
     enable_private_nodes   = "true"
+    enable_private_endpoint = "${var.enable_private_endpoint}"
   }
 
   ip_allocation_policy {
@@ -74,16 +75,12 @@ resource "google_container_cluster" "k8s" {
     }
   }
 
-  // Production reccomended addons
   addons_config {
     http_load_balancing {
       disabled = false
     }
     horizontal_pod_autoscaling {
       disabled = false
-    }
-    kubernetes_dashboard {
-      disabled = true
     }
     network_policy_config {
       disabled = false
@@ -100,10 +97,6 @@ resource "google_container_cluster" "k8s" {
   network_policy {
     provider = "PROVIDER_UNSPECIFIED"
     enabled  = "true"
-  }
-
-  pod_security_policy_config {
-    enabled = "${var.enable_psp}"
   }
 
   resource_labels = "${var.labels}"

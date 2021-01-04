@@ -16,7 +16,7 @@ resource "google_container_node_pool" "nodepool1" {
 
   lifecycle {
     // Manually update version during upgrade operations
-    ignore_changes = ["node_count", "version", "initial_node_count"]
+    ignore_changes = ["node_count", "version", "initial_node_count", "node_config[0].metadata"]
   }
 
   name               = "${var.nodepool1_name}"
